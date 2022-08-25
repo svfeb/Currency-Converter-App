@@ -32,7 +32,7 @@ const data = [
     exchangeRate: 6.86,
   },
   {
-    id: 5,
+    id: 6,
     country: "United States",
     capital: "Washington, D.C.",
     currency: "USD - (US Dollar)",

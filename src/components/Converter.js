@@ -3,9 +3,9 @@ import { HiSwitchHorizontal } from "react-icons/hi";
 import Data from "./Data";
 
 function Converter() {
-  const [from, setFrom] = useState(Data[0].exchangeRate);
-  const [to, setTo] = useState(Data[0].exchangeRate);
-  const [currencytFrom, setCurrencytFrom] = useState(Data[0].currency);
+  const [from, setFrom] = useState(Data[0]);
+  const [to, setTo] = useState(Data[0]);
+  const [currencyFrom, setCurrencytFrom] = useState(Data[0].currency);
   const [currencyTo, setCurrencytTo] = useState(Data[0].currency);
   const [amount, setAmount] = useState(0);
   const [output, setOutput] = useState(0);
@@ -23,6 +23,7 @@ function Converter() {
         setCurrencytTo(e.currency);
       }
     });
+
     setOutput(Number(USDToTarget));
   }
 
@@ -62,7 +63,7 @@ function Converter() {
         placeholder="Select From"
       >
         {Data.map((acc) => (
-          <option key={acc.exchangeRate} value={acc.exchangeRate}>
+          <option key={acc.id} value={acc.exchangeRate}>
             {acc.currency}
           </option>
         ))}
@@ -87,7 +88,7 @@ function Converter() {
         placeholder="Select From"
       >
         {Data.map((acc) => (
-          <option key={acc.exchangeRate} value={acc.exchangeRate}>
+          <option key={acc.id} value={acc.exchangeRate}>
             {acc.currency}
           </option>
         ))}
@@ -107,10 +108,10 @@ function Converter() {
           setOutput(e.target.value);
         }}
       >
-        Converted Currency:{" "}
+        Converted Currency:
         {amount +
           " " +
-          currencytFrom +
+          currencyFrom +
           " = " +
           output.toFixed(2) +
           " " +
