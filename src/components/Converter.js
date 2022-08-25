@@ -1,56 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { HiSwitchHorizontal } from "react-icons/hi";
 import Data from "./Data";
 
 function Converter() {
-  const [currencyOptions, setCurrencyOptions] = useState([]);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [input, setInput] = useState("");
-  const [inputCurrency, setInputCurrency] = useState(1);
-  const [targetCurrency, setTargetCurrency] = useState(0);
-  const [amountInFromCurrency, setAmountInFromCurrency] = useState(true);
-  const [exchangeRate, setExchangeRate] = useState();
+  const [from, setFrom] = useState(Data[0].exchangeRate);
+  const [to, setTo] = useState(Data[0].exchangeRate);
+  const [currencytFrom, setCurrencytFrom] = useState(Data[0].currency);
+  const [currencyTo, setCurrencytTo] = useState(Data[0].currency);
+  const [amount, setAmount] = useState(0);
+  const [output, setOutput] = useState(0);
 
-  let toAmount, fromAmount;
-  if (amountInFromCurrency) {
-    fromAmount = input;
-    toAmount = input * exchangeRate;
-  } else {
-    toAmount = input;
-    fromAmount = input / exchangeRate;
+  function Click() {
+    const fromToUSD = +amount / from;
+    const USDToTarget = fromToUSD * to;
+    Data.forEach((e) => {
+      if (+e.exchangeRate === +from) {
+        setCurrencytFrom(e.currency);
+      }
+    });
+    Data.forEach((e) => {
+      if (+e.exchangeRate === +to) {
+        setCurrencytTo(e.currency);
+      }
+    });
+    setOutput(Number(USDToTarget));
   }
 
-  useEffect(() => {
-    const firstCurrency = Data.map((inner) => inner.exchangeRate);
-    setCurrencyOptions(Data.map((inner) => inner.exchangeRate));
-    setFrom(Data.base);
-    setTo(firstCurrency);
-    setExchangeRate([firstCurrency]);
-  }, []);
-
-  // function convert(){
-  //   setTargetCurrency(()=>{
-  //     if()
-  //   })
-  // }
-  // useEffect(() => {
-  //   Data.forEach((o) => {
-  //     if (o.currency === to) {
-  //       console.log(o);
-  //     }
-  //   });
-  // });
-  // const currency = Data.map((key) => {
-  //   return key.exchangeRate;
-  // });
-  // console.log(currency);
-
-  // const [options, setOptions] = useState([]);
-  // const [output, setOutput] = useState(0);
-
   const change = (e) => {
-    setInput(e.target.value);
+    setAmount(e.target.value);
   };
 
   function flip() {
@@ -64,8 +41,9 @@ function Converter() {
       <label htmlFor="amount">Amount: </label>
 
       <input
-        value={input}
+        value={amount}
         type="number"
+        min="0"
         name="amount"
         style={{ margin: "30px" }}
         onChange={change}
@@ -84,7 +62,9 @@ function Converter() {
         placeholder="Select From"
       >
         {Data.map((acc) => (
-          <option value={acc.currency}>{acc.currency}</option>
+          <option key={acc.exchangeRate} value={acc.exchangeRate}>
+            {acc.currency}
+          </option>
         ))}
       </select>
 
@@ -107,13 +87,35 @@ function Converter() {
         placeholder="Select From"
       >
         {Data.map((acc) => (
-          <option value={acc.currency}>{acc.currency}</option>
+          <option key={acc.exchangeRate} value={acc.exchangeRate}>
+            {acc.currency}
+          </option>
         ))}
       </select>
 
-      <button className="btn btn-primary my-3" style={{ margin: "30px" }}>
+      <button
+        className="btn btn-primary my-3"
+        style={{ margin: "30px" }}
+        onClick={Click}
+      >
         Convert
       </button>
+      <h3
+        id="currencyOutput"
+        value={output}
+        onChange={(e) => {
+          setOutput(e.target.value);
+        }}
+      >
+        Converted Currency:{" "}
+        {amount +
+          " " +
+          currencytFrom +
+          " = " +
+          output.toFixed(2) +
+          " " +
+          currencyTo}
+      </h3>
     </div>
   );
 }
