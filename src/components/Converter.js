@@ -3,8 +3,8 @@ import { HiSwitchHorizontal } from "react-icons/hi";
 import Data from "./Data";
 
 function Converter() {
-  const [from, setFrom] = useState(Data[0]);
-  const [to, setTo] = useState(Data[0]);
+  const [from, setFrom] = useState(Data[0].exchangeRate);
+  const [to, setTo] = useState(Data[0].exchangeRate);
   const [currencyFrom, setCurrencytFrom] = useState(Data[0].currency);
   const [currencyTo, setCurrencytTo] = useState(Data[0].currency);
   const [amount, setAmount] = useState(0);
