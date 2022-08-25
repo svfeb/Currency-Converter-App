@@ -5,7 +5,7 @@ import Converter from "./Converter";
 function CurrencyApp(props) {
   const [showConverter, setShowConverter] = useState(false);
   const [showCurrencyList, setShowCurrencyList] = useState(false);
-  //   const [hideCurrencyList, setHideCurrencyList] = useState(false);
+
   const handleConverter = () => {
     setShowConverter((current) => !current);
   };
@@ -14,7 +14,7 @@ function CurrencyApp(props) {
     setShowConverter(e.target.value);
   };
 
-  const handleCurrencylist = () => {
+  const handleCurrencyList = () => {
     setShowCurrencyList((current) => !current);
   };
 
@@ -37,7 +37,7 @@ function CurrencyApp(props) {
       </div>
       <div>
         <button
-          onClick={handleCurrencylist}
+          onClick={handleCurrencyList}
           onChange={change}
           style={{
             paddingLeft: "100px",
@@ -54,35 +54,3 @@ function CurrencyApp(props) {
 }
 
 export default CurrencyApp;
-
-// function CurrencyApp(props) {
-//     return (
-//       <div>
-//         <div>
-//           <h1>{props.Heading}</h1>
-//           <button
-//             onClick={Converter}
-//             style={{
-//               paddingLeft: "100px",
-//               paddingRight: "100px",
-//               margin: "10px",
-//             }}
-//           >
-//             Converter
-//           </button>
-//           <button
-//             onClick={CurrencyList}
-//             style={{
-//               paddingLeft: "100px",
-//               paddingRight: "100px",
-//               margin: "10px",
-//             }}
-//           >
-//             Currency List
-//           </button>
-//         </div>
-//         {/* <Converter /> */}
-//         {/* <CurrencyList /> */}
-//       </div>
-//     );
-//   }

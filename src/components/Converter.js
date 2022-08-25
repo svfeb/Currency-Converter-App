@@ -13,12 +13,12 @@ function Converter() {
   function Click() {
     const fromToUSD = +amount / from;
     const USDToTarget = fromToUSD * to;
+
     Data.forEach((e) => {
       if (+e.exchangeRate === +from) {
         setCurrencytFrom(e.currency);
       }
-    });
-    Data.forEach((e) => {
+
       if (+e.exchangeRate === +to) {
         setCurrencytTo(e.currency);
       }
