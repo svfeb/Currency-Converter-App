@@ -109,7 +109,8 @@ function Converter() {
         }}
       >
         Converted Currency:
-        {amount +
+        {" " +
+          amount +
           " " +
           currencyFrom +
           " = " +
