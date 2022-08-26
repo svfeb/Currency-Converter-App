@@ -14,7 +14,7 @@ function Converter() {
   const [currencySymbolFrom, setCurrencySymbolFrom] = useState(
     Data[0].currencySymbol
   );
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [output, setOutput] = useState(0);
 
   function Click() {
@@ -73,6 +73,7 @@ function Converter() {
               <InputGroup.Text>{currencySymbolFrom}</InputGroup.Text>
 
               <Form.Control
+                placeholder="0.00"
                 aria-label="Amount (to the nearest dollar)"
                 value={amount}
                 onChange={change}
