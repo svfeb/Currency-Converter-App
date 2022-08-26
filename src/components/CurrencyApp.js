@@ -1,53 +1,29 @@
-import React, { useState } from "react";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+
 import CurrencyList from "./CurrencyList";
 import Converter from "./Converter";
 
-function CurrencyApp(props) {
-  const [showConverter, setShowConverter] = useState(false);
-  const [showCurrencyList, setShowCurrencyList] = useState(false);
+import "../App.css";
 
-  const handleConverter = () => {
-    setShowConverter((current) => !current);
-  };
-
-  const change = (e) => {
-    setShowConverter(e.target.value);
-  };
-
-  const handleCurrencyList = () => {
-    setShowCurrencyList((current) => !current);
-  };
-
+function CurrencyApp() {
   return (
-    <div>
-      <div>
-        <h1>{props.Heading}</h1>
-        <button
-          onClick={handleConverter}
-          onChange={change}
-          style={{
-            paddingLeft: "100px",
-            paddingRight: "100px",
-            margin: "10px",
-          }}
+    <div className="App">
+      <div className="tab shadow-sm p-3 mb-5 bg-body rounded bg-light text-dark">
+        <h1>The Currency App</h1>
+        <Tabs
+          defaultActiveKey="converter"
+          id="justify-tab-example"
+          className="mb-3"
+          justify
         >
-          Converter
-        </button>
-        {showConverter && <Converter />}
-      </div>
-      <div>
-        <button
-          onClick={handleCurrencyList}
-          onChange={change}
-          style={{
-            paddingLeft: "100px",
-            paddingRight: "100px",
-            margin: "10px",
-          }}
-        >
-          Currency List
-        </button>
-        {showCurrencyList && <CurrencyList />}
+          <Tab eventKey="converter" title="Converter">
+            <Converter />
+          </Tab>
+          <Tab eventKey="currencyList" title="Currency List">
+            <CurrencyList />
+          </Tab>
+        </Tabs>
       </div>
     </div>
   );

@@ -1,33 +1,33 @@
-import React from "react";
-import data from "./Data";
-import "../App.css";
+import Table from "react-bootstrap/Table";
+import Data from "./Data";
 
 function CurrencyList() {
   return (
-    <div className="App">
-      <h1>Currency List</h1>
-      <table>
-        <tbody>
+    <div style={{ overflowX: "auto" }}>
+      <Table bordered hover>
+        <thead>
           <tr>
-            <th>s.no.</th>
+            <th>S.No.</th>
             <th>Currency</th>
-            <th>Exchange Rate</th>
+            <th>USD Exchange Rate</th>
             <th>Country</th>
             <th>Capital</th>
           </tr>
-          {data.map((val, key) => {
-            return (
-              <tr key={key}>
-                <td>{val.id}</td>
-                <td>{val.currency}</td>
-                <td>{val.exchangeRate}</td>
-                <td>{val.country}</td>
-                <td>{val.capital}</td>
-              </tr>
-            );
-          })}
+        </thead>
+        <tbody>
+          {Data.map((item, key) => (
+            <tr key={key}>
+              <td>{item.id}</td>
+              <td>
+                {item.currency} - {item.currencySymbol}
+              </td>
+              <td>{item.exchangeRate}</td>
+              <td>{item.country}</td>
+              <td>{item.capital}</td>
+            </tr>
+          ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 }
