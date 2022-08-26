@@ -19,12 +19,12 @@ function Converter() {
   const [showResult, setShowResult] = useState(false);
   const [hideButton, setHideButton] = useState(true);
 
-  function convert() {
+  function convertCurrency() {
     const fromToUSD = +amount / from;
-    const USDToTarget = fromToUSD * to;
+    const usdToTarget = fromToUSD * to;
     setShowResult(true);
     setHideButton(false);
-    setOutput(USDToTarget);
+    setOutput(usdToTarget);
   }
 
   function changeCurrencySymbol() {
@@ -43,16 +43,19 @@ function Converter() {
     });
   }
 
-  const change = (e) => {
+  const changeAmount = (e) => {
     setAmount(e.target.value);
     setShowResult(false);
     setHideButton(true);
   };
 
-  function flip() {
+  function flipCurrency() {
     const temp = from;
     setFrom(to);
     setTo(temp);
+    setShowResult(false);
+    setHideButton(true);
+
     Data.forEach((e) => {
       if (+e.exchangeRate === +to) {
         setCurrencytFrom(e.currency);
@@ -82,7 +85,7 @@ function Converter() {
                 placeholder="0.00"
                 aria-label="Amount (to the nearest dollar)"
                 value={amount}
-                onChange={change}
+                onChange={changeAmount}
               />
             </InputGroup>
           </Form.Group>
@@ -105,7 +108,7 @@ function Converter() {
             </Form.Select>
           </Form.Group>
           <Col sm="1">
-            <span className="material-symbols-outlined" onClick={flip}>
+            <span className="material-symbols-outlined" onClick={flipCurrency}>
               swap_horiz
             </span>
           </Col>
@@ -134,7 +137,7 @@ function Converter() {
             className="btn btn-primary"
             variant="primary"
             type="button"
-            onClick={convert}
+            onClick={convertCurrency}
           >
             Convert
           </Button>
