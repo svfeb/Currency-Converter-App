@@ -132,8 +132,7 @@ function Converter() {
         >
           Converted Currency:
           {" " +
-            amount +
-            " " +
+            +" " +
             currencyFrom +
             " = " +
             output.toFixed(2) +

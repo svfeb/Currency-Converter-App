@@ -4,9 +4,7 @@
   box-sizing: border-box;
 }
 
-
-.background {
-
+body {
   background-color: rgb(241 245 249 / 1);
 }
 
@@ -31,10 +29,7 @@
   float: right !important;
 }
 
-
-.form {
-
-
+form {
   height: auto;
   min-height: 200px;
 }
@@ -67,10 +62,7 @@
     align-items: center;
   }
 
-
-  .form {
-
-
+  form {
     height: auto;
     min-height: 470px;
   }
