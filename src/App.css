@@ -6,7 +6,6 @@
 
 
 .background {
-
   background-color: rgb(241 245 249 / 1);
 }
 
@@ -28,13 +27,11 @@
 }
 
 .btn-primary {
-  float: right !important;
+  float: right  !important;
 }
 
 
-.form {
-
-
+form {
   height: auto;
   min-height: 200px;
 }
@@ -68,9 +65,7 @@
   }
 
 
-  .form {
-
-
+  form {
     height: auto;
     min-height: 470px;
   }

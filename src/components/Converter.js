@@ -16,11 +16,14 @@ function Converter() {
   );
   const [amount, setAmount] = useState("");
   const [output, setOutput] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [hideButton, setHideButton] = useState(true);
 
   function convert() {
     const fromToUSD = +amount / from;
     const USDToTarget = fromToUSD * to;
-
+    setShowResult(true);
+    setHideButton(false);
     setOutput(USDToTarget);
   }
 
@@ -42,6 +45,8 @@ function Converter() {
 
   const change = (e) => {
     setAmount(e.target.value);
+    setShowResult(false);
+    setHideButton(true);
   };
 
   function flip() {
@@ -62,6 +67,7 @@ function Converter() {
       }
     });
   }
+
   return (
     <div>
       <Form className="form">
@@ -123,31 +129,30 @@ function Converter() {
           </Form.Group>
         </Row>
 
-        <p
-          id="currencyOutput"
-          value={output}
-          onChange={(e) => {
-            setOutput(e.target.value);
-          }}
-        >
-          Converted Currency:
-          {" " +
-            +" " +
-            currencyFrom +
-            " = " +
-            output.toFixed(2) +
-            " " +
-            currencyTo}
-        </p>
-
-        <Button
-          className="btn btn-primary"
-          variant="primary"
-          type="button"
-          onClick={convert}
-        >
-          Convert
-        </Button>
+        {hideButton && (
+          <Button
+            className="btn btn-primary"
+            variant="primary"
+            type="button"
+            onClick={convert}
+          >
+            Convert
+          </Button>
+        )}
+        {showResult && (
+          <div>
+            <p
+              id="currencyOutput"
+              value={output}
+              onChange={(e) => {
+                setOutput(e.target.value);
+              }}
+            >
+              {" " + amount + " " + currencyFrom + " = "}
+            </p>
+            <h3> {output.toFixed(2) + " " + currencyTo}</h3>
+          </div>
+        )}
       </Form>
     </div>
   );
