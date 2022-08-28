@@ -7,67 +7,83 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Data from "./Data";
 
 function Converter() {
-  const [from, setFrom] = useState(Data[0].exchangeRate);
-  const [to, setTo] = useState(Data[0].exchangeRate);
-  const [currencyFrom, setCurrencytFrom] = useState(Data[0].currency);
-  const [currencyTo, setCurrencytTo] = useState(Data[0].currency);
-  const [currencySymbolFrom, setCurrencySymbolFrom] = useState(
-    Data[0].currencySymbol
-  );
-  const [amount, setAmount] = useState("");
-  const [output, setOutput] = useState(0);
-  const [showResult, setShowResult] = useState(false);
-  const [hideButton, setHideButton] = useState(true);
+  const [state, setState] = useState({
+    sourceId: Data[0].id,
+    targetId: Data[0].id,
+    sourceExchangeRate: Data[0].exchangeRate,
+    targetExchangeRate: Data[0].exchangeRate,
+    currencyFrom: Data[0].currency,
+    currencyTo: Data[0].currency,
+    currencySymbolFrom: Data[0].currencySymbol,
+    currencySymbolTo: Data[0].currencySymbol,
+    amount: "",
+    output: 0,
+    showResult: false,
+    hideButton: true,
+  });
 
   function convertCurrency() {
-    const fromToUSD = +amount / from;
-    const usdToTarget = fromToUSD * to;
-    setShowResult(true);
-    setHideButton(false);
-    setOutput(usdToTarget);
+    const fromToUSD = state.amount / state.sourceExchangeRate;
+    const usdToTarget = fromToUSD * state.targetExchangeRate;
+    setState({
+      ...state,
+      output: usdToTarget,
+      showResult: true,
+      hideButton: false,
+    });
   }
 
   function changeCurrencySymbol() {
+    var fromCurrency = "";
+    var fromSymbol = "";
+    var toCurrency = "";
+    var toSymbol = "";
     Data.forEach((e) => {
-      if (+e.exchangeRate === +from) {
-        setCurrencytFrom(e.currency);
+      if (+e.id === +state.sourceId) {
+        fromCurrency = e.currency;
+        fromSymbol = e.currencySymbol;
       }
-
-      if (+e.exchangeRate === +to) {
-        setCurrencytTo(e.currency);
+      if (+e.id === +state.targetId) {
+        toCurrency = e.currency;
+        toSymbol = e.currencySymbol;
       }
-
-      if (+e.exchangeRate === +from) {
-        setCurrencySymbolFrom(e.currencySymbol);
-      }
+    });
+    setState({
+      ...state,
+      currencyFrom: fromCurrency,
+      currencySymbolFrom: fromSymbol,
+      currencyTo: toCurrency,
+      currencySymbolTo: toSymbol,
     });
   }
 
   const changeAmount = (e) => {
-    setAmount(e.target.value);
-    setShowResult(false);
-    setHideButton(true);
+    setState({
+      ...state,
+      showResult: false,
+      hideButton: true,
+      amount: e.target.value,
+    });
   };
 
   function flipCurrency() {
-    const temp = from;
-    setFrom(to);
-    setTo(temp);
-    setShowResult(false);
-    setHideButton(true);
+    var tempExchangeRate = state.sourceExchangeRate;
+    var tempCurrencySymbol = state.currencySymbolFrom;
+    var tempCurrency = state.currencyFrom;
+    var tempId = state.sourceId;
 
-    Data.forEach((e) => {
-      if (+e.exchangeRate === +to) {
-        setCurrencytFrom(e.currency);
-      }
-
-      if (+e.exchangeRate === +from) {
-        setCurrencytTo(e.currency);
-      }
-
-      if (+e.exchangeRate === +to) {
-        setCurrencySymbolFrom(e.currencySymbol);
-      }
+    setState({
+      ...state,
+      sourceId: state.targetId,
+      targetId: tempId,
+      currencyFrom: state.currencyTo,
+      currencyTo: tempCurrency,
+      sourceExchangeRate: state.targetExchangeRate,
+      currencySymbolFrom: state.currencySymbolTo,
+      currencySymbolTo: tempCurrencySymbol,
+      targetExchangeRate: tempExchangeRate,
+      showResult: false,
+      hideButton: true,
     });
   }
 
@@ -79,12 +95,12 @@ function Converter() {
             <Form.Label>Amount</Form.Label>
 
             <InputGroup className="mb-3">
-              <InputGroup.Text>{currencySymbolFrom}</InputGroup.Text>
+              <InputGroup.Text>{state.currencySymbolFrom}</InputGroup.Text>
 
               <Form.Control
                 placeholder="0.00"
                 aria-label="Amount (to the nearest dollar)"
-                value={amount}
+                value={state.amount}
                 onChange={changeAmount}
               />
             </InputGroup>
@@ -93,15 +109,28 @@ function Converter() {
           <Form.Group as={Col} controlId="formGridState">
             <Form.Label>From</Form.Label>
             <Form.Select
-              value={from}
+              value={state.sourceExchangeRate}
               onChange={(e) => {
-                setFrom(e.target.value);
+                setState({
+                  ...state,
+                  sourceId:
+                    e.target.options[
+                      e.target.options.selectedIndex
+                    ].getAttribute("data-key"),
+                  sourceExchangeRate: e.target.value,
+                  showResult: false,
+                  hideButton: true,
+                });
               }}
               onMouseOut={changeCurrencySymbol}
               onMouseOver={changeCurrencySymbol}
             >
               {Data.map((item) => (
-                <option key={item.id} value={item.exchangeRate}>
+                <option
+                  key={item.id}
+                  data-key={item.id}
+                  value={item.exchangeRate}
+                >
                   {item.currency}
                 </option>
               ))}
@@ -117,14 +146,27 @@ function Converter() {
             <Form.Label>To</Form.Label>
             <Form.Select
               onChange={(e) => {
-                setTo(e.target.value);
+                setState({
+                  ...state,
+                  targetId:
+                    e.target.options[
+                      e.target.options.selectedIndex
+                    ].getAttribute("data-key"),
+                  targetExchangeRate: e.target.value,
+                  showResult: false,
+                  hideButton: true,
+                });
               }}
-              value={to}
+              value={state.targetExchangeRate}
               onMouseOut={changeCurrencySymbol}
               onMouseOver={changeCurrencySymbol}
             >
               {Data.map((item) => (
-                <option key={item.id} value={item.exchangeRate}>
+                <option
+                  key={item.id}
+                  data-key={item.id}
+                  value={item.exchangeRate}
+                >
                   {item.currency}
                 </option>
               ))}
@@ -132,7 +174,7 @@ function Converter() {
           </Form.Group>
         </Row>
 
-        {hideButton && (
+        {state.hideButton && (
           <Button
             className="btn btn-primary"
             variant="primary"
@@ -142,23 +184,22 @@ function Converter() {
             Convert
           </Button>
         )}
-        {showResult && (
+        {state.showResult && (
           <div>
             <p
               id="currencyOutput"
-              value={output}
+              value={state.output}
               onChange={(e) => {
-                setOutput(e.target.value);
+                setState({ ...state, output: e.target.value });
               }}
             >
-              {" " + amount + " " + currencyFrom + " = "}
+              {" " + state.amount + " " + state.currencyFrom + " = "}
             </p>
-            <h3> {output.toFixed(2) + " " + currencyTo}</h3>
+            <h3> {state.output.toFixed(2) + " " + state.currencyTo}</h3>
           </div>
         )}
       </Form>
     </div>
   );
 }
-
 export default Converter;
