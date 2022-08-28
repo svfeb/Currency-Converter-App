@@ -34,10 +34,10 @@ function Converter() {
   }
 
   function changeCurrencySymbol() {
-    var fromCurrency = "";
-    var fromSymbol = "";
-    var toCurrency = "";
-    var toSymbol = "";
+    let fromCurrency = "";
+    let fromSymbol = "";
+    let toCurrency = "";
+    let toSymbol = "";
     Data.forEach((e) => {
       if (+e.id === +state.sourceId) {
         fromCurrency = e.currency;
@@ -67,10 +67,10 @@ function Converter() {
   };
 
   function flipCurrency() {
-    var tempExchangeRate = state.sourceExchangeRate;
-    var tempCurrencySymbol = state.currencySymbolFrom;
-    var tempCurrency = state.currencyFrom;
-    var tempId = state.sourceId;
+    let tempExchangeRate = state.sourceExchangeRate;
+    let tempCurrencySymbol = state.currencySymbolFrom;
+    let tempCurrency = state.currencyFrom;
+    let tempId = state.sourceId;
 
     setState({
       ...state,
