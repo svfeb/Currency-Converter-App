@@ -122,8 +122,7 @@ function Converter() {
                   hideButton: true,
                 });
               }}
-              onMouseOut={changeCurrencySymbol}
-              onMouseOver={changeCurrencySymbol}
+              onClick={changeCurrencySymbol}
             >
               {Data.map((item) => (
                 <option
@@ -158,8 +157,7 @@ function Converter() {
                 });
               }}
               value={state.targetExchangeRate}
-              onMouseOut={changeCurrencySymbol}
-              onMouseOver={changeCurrencySymbol}
+              onClick={changeCurrencySymbol}
             >
               {Data.map((item) => (
                 <option
