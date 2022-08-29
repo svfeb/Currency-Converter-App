@@ -34,6 +34,8 @@ function Converter() {
   }
 
   function changeCurrencySymbol() {
+    let fromExchangeRate = "";
+    let toExchangeRate = "";
     let fromCurrency = "";
     let fromSymbol = "";
     let toCurrency = "";
@@ -42,14 +44,18 @@ function Converter() {
       if (+e.id === +state.sourceId) {
         fromCurrency = e.currency;
         fromSymbol = e.currencySymbol;
+        fromExchangeRate = e.exchangeRate;
       }
       if (+e.id === +state.targetId) {
         toCurrency = e.currency;
         toSymbol = e.currencySymbol;
+        toExchangeRate = e.exchangeRate;
       }
     });
     setState({
       ...state,
+      sourceExchangeRate: fromExchangeRate,
+      targetExchangeRate: toExchangeRate,
       currencyFrom: fromCurrency,
       currencySymbolFrom: fromSymbol,
       currencyTo: toCurrency,
@@ -95,28 +101,38 @@ function Converter() {
             <Form.Label>Amount</Form.Label>
 
             <InputGroup className="mb-3">
-              <InputGroup.Text>{state.currencySymbolFrom}</InputGroup.Text>
+              <InputGroup.Text className="noSelect">
+                {state.currencySymbolFrom}
+              </InputGroup.Text>
 
               <Form.Control
                 placeholder="0.00"
+                autoComplete="new-password"
                 aria-label="Amount (to the nearest dollar)"
                 value={state.amount}
                 onChange={changeAmount}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    convertCurrency();
+                  }
+                }}
               />
+              <InputGroup.Text className="noSelect">
+                {state.currencySymbolTo}
+              </InputGroup.Text>
             </InputGroup>
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridState">
             <Form.Label>From</Form.Label>
             <Form.Select
-              value={state.sourceExchangeRate}
+              value={state.sourceId}
               onChange={(e) => {
                 setState({
                   ...state,
-                  sourceId:
-                    e.target.options[
-                      e.target.options.selectedIndex
-                    ].getAttribute("data-key"),
+                  sourceId: e.target.value,
+
                   sourceExchangeRate: e.target.value,
                   showResult: false,
                   hideButton: true,
@@ -125,18 +141,17 @@ function Converter() {
               onClick={changeCurrencySymbol}
             >
               {Data.map((item) => (
-                <option
-                  key={item.id}
-                  data-key={item.id}
-                  value={item.exchangeRate}
-                >
+                <option key={item.id} value={item.id}>
                   {item.currency}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
           <Col sm="1">
-            <span className="material-symbols-outlined" onClick={flipCurrency}>
+            <span
+              className="material-symbols-outlined noSelect"
+              onClick={flipCurrency}
+            >
               swap_horiz
             </span>
           </Col>
@@ -147,24 +162,18 @@ function Converter() {
               onChange={(e) => {
                 setState({
                   ...state,
-                  targetId:
-                    e.target.options[
-                      e.target.options.selectedIndex
-                    ].getAttribute("data-key"),
+                  targetId: e.target.value,
+
                   targetExchangeRate: e.target.value,
                   showResult: false,
                   hideButton: true,
                 });
               }}
-              value={state.targetExchangeRate}
+              value={state.targetId}
               onClick={changeCurrencySymbol}
             >
               {Data.map((item) => (
-                <option
-                  key={item.id}
-                  data-key={item.id}
-                  value={item.exchangeRate}
-                >
+                <option key={item.id} value={item.id}>
                   {item.currency}
                 </option>
               ))}
